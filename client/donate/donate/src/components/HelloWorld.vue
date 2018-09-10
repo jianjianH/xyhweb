@@ -1,113 +1,49 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li>
-        <a
-          href="https://vuejs.org"
-          target="_blank"
-        >
-          Core Docs
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://forum.vuejs.org"
-          target="_blank"
-        >
-          Forum
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://chat.vuejs.org"
-          target="_blank"
-        >
-          Community Chat
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://twitter.com/vuejs"
-          target="_blank"
-        >
-          Twitter
-        </a>
-      </li>
-      <br>
-      <li>
-        <a
-          href="http://vuejs-templates.github.io/webpack/"
-          target="_blank"
-        >
-          Docs for This Template
-        </a>
-      </li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li>
-        <a
-          href="http://router.vuejs.org/"
-          target="_blank"
-        >
-          vue-router
-        </a>
-      </li>
-      <li>
-        <a
-          href="http://vuex.vuejs.org/"
-          target="_blank"
-        >
-          vuex
-        </a>
-      </li>
-      <li>
-        <a
-          href="http://vue-loader.vuejs.org/"
-          target="_blank"
-        >
-          vue-loader
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/awesome-vue"
-          target="_blank"
-        >
-          awesome-vue
-        </a>
-      </li>
-    </ul>
+  <div class="centerView2">
+    <div class="WXtop">
+        <img src="http://pb0geuvxr.bkt.clouddn.com/mp/xyhweb/donation/ganen.png">
+    </div>
+    <div class="WXbody">
+        <div class="WXtit">
+            <div class="WXtitlis">姓名</div>
+            <div class="WXtitlis">入学年级</div>
+            <div class="WXtitlis">捐赠金额</div>
+            <div class="WXtitlis">捐赠时间</div>
+        </div>
+        <div class="WXCon">
+            <ul class="WXCon-list">
+                  <li class="WXCon-lis clear">
+                      <div class="WXtitlis1">王强</div>
+                      <div class="WXtitlis1 WXtitlis2">92审计</div>
+                      <div class="WXtitlis1">20,000</div>
+                      <div class="WXtitlis1">9月9日</div>
+                  </li>
+                
+                  <li class="WXCon-lis clear">
+                      <div class="WXtitlis1">黄迈</div>
+                      <div class="WXtitlis1 WXtitlis2">02金融</div>
+                      <div class="WXtitlis1">2,000</div>
+                      <div class="WXtitlis1">9月9日</div>
+                  </li>
+            </ul>
+        </div>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
-  data () {
+  name: "HelloWorld",
+  data() {
     return {
-      msg: 'Welcome to Your Vue.js App'
-    }
+      msg: "Welcome to Your Vue.js App"
+    };
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+@import "./flexslider.css";
+@import "./style.css";
 </style>
