@@ -22,11 +22,11 @@ const port = process.env.PORT || config.port
 onerror(app)
 
 // middlewares
-app.use(bodyparser())
+app
+  .use(bodyparser())
   .use(json())
   .use(logger())
-  // .use(require('koa-static')(__dirname + '/public'))
-  .use(require('koa-static')(path.resolve((__dirname + '../../client'))))
+  .use(require('koa-static')(__dirname + '/public'))
   .use(views(path.join(__dirname, '/views'), {
     options: {settings: {views: path.join(__dirname, 'views')}},
     map: {'hjs': 'hogan'},
@@ -46,7 +46,7 @@ app.use(async (ctx, next) => {
 router.get('/', async (ctx, next) => {
   // ctx.body = 'Hello World'
   ctx.state = {
-    title: 'Koa2'
+    title: '江财北京校友会'
   }
   await ctx.render('index', ctx.state)
 })
