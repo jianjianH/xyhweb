@@ -15,6 +15,7 @@ const path = require('path')
 
 const config = require('./config')
 const routes = require('./routes')
+const response = require('./middlewares/response')
 
 const port = process.env.PORT || config.port
 
@@ -23,6 +24,7 @@ onerror(app)
 
 // middlewares
 app
+  .use(response)
   .use(bodyparser())
   .use(json())
   .use(logger())
