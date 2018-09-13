@@ -1,11 +1,8 @@
 const Koa = require('koa')
-const Router = require('koa-router')
 const app = new Koa()
-const router = new Router()
 
 const views = require('koa-views')
 const co = require('co')
-const convert = require('koa-convert')
 const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
@@ -14,9 +11,8 @@ const debug = require('debug')('koa2:server')
 const path = require('path')
 
 const config = require('./config')
-const routes = require('./routes')
 const response = require('./middlewares/response')
-
+const router = require('./routes')
 const port = process.env.PORT || config.port
 
 // error handler
@@ -36,7 +32,6 @@ app
     extension: 'hjs'
   }))
   .use(router.routes())
-  .use(router.allowedMethods())
 
 // logger
 app.use(async (ctx, next) => {
@@ -46,15 +41,6 @@ app.use(async (ctx, next) => {
   console.log(`${ctx.method} ${ctx.url} - $ms`)
 })
 
-router.get('/', async (ctx, next) => {
-  // ctx.body = 'Hello World'
-  ctx.state = {
-    title: '江财北京校友会'
-  }
-  await ctx.render('index', ctx.state)
-})
-
-routes(router)
 app.on('error', function(err, ctx) {
   console.log(err)
   logger.error('server error', err, ctx)
