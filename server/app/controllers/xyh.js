@@ -1,13 +1,20 @@
 /**
  * 业务逻辑
  */
-async function test (ctx, next) {
-    // 当没有查询字符串时，返回一个空对象
+
+/**
+ * 捐赠名单
+ */
+const fs = require('fs')
+const path = require('path')
+// 捐赠信息保存在json文件中
+const donate = JSON.parse(fs.readFileSync(path.join(__dirname, '../json/donate.json')))
+async function getDonateList(ctx, next) {
     ctx.state = {
-        data: 'test data'
+        data: donate
     }
 }
 
 module.exports = {
-    test
+    getDonateList
 }
