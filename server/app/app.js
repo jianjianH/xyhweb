@@ -9,6 +9,7 @@ const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const debug = require('debug')('koa2:server')
 const path = require('path')
+const cors = require('koa-cors');
 
 const config = require('./config')
 const response = require('./middlewares/response')
@@ -20,6 +21,7 @@ onerror(app)
 
 // middlewares
 app
+  .use(cors())
   .use(response)
   .use(bodyparser())
   .use(json())

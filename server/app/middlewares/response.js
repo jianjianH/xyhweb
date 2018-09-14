@@ -10,7 +10,7 @@ module.exports = async function (ctx, next) {
         // 如果直接写入在 body 中，则不作处理
         // 如果写在 ctx.body 为空，则使用 state 作为响应
         ctx.body = ctx.body ? ctx.body : {
-            result: ctx.state.result !== undefined ? ctx.state.result : 1,
+            result: ctx.state.result !== undefined ? ctx.state.result : 0,
             data: ctx.state.data !== undefined ? ctx.state.data : {errorMsg: "empty data"}
         }
     } catch (e) {

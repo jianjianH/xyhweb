@@ -11,198 +11,68 @@
             <div class="WXtitlis">捐赠金额</div>
             <div class="WXtitlis">捐赠时间</div>
         </div>
-        <div id="WXCon">
-            <ul class="WXCon-list">
-                  <li class="WXCon-lis clear">
-                      <div class="WXtitlis1">XX</div>
-                      <div class="WXtitlis1 WXtitlis2">92审计</div>
-                      <div class="WXtitlis1">20,000</div>
-                      <div class="WXtitlis1">9月9日</div>
-                  </li>
-                
-                  <li class="WXCon-lis clear">
-                      <div class="WXtitlis1">XX</div>
-                      <div class="WXtitlis1 WXtitlis2">02金融</div>
-                      <div class="WXtitlis1">2,000</div>
-                      <div class="WXtitlis1">9月9日</div>
-                  </li>
-                  <li class="WXCon-lis clear">
-                      <div class="WXtitlis1">XX</div>
-                      <div class="WXtitlis1 WXtitlis2">92审计</div>
-                      <div class="WXtitlis1">20,000</div>
-                      <div class="WXtitlis1">9月9日</div>
-                  </li>
-                
-                  <li class="WXCon-lis clear">
-                      <div class="WXtitlis1">XX</div>
-                      <div class="WXtitlis1 WXtitlis2">02金融</div>
-                      <div class="WXtitlis1">2,000</div>
-                      <div class="WXtitlis1">9月9日</div>
-                  </li>
-                  <li class="WXCon-lis clear">
-                      <div class="WXtitlis1">XX</div>
-                      <div class="WXtitlis1 WXtitlis2">92审计</div>
-                      <div class="WXtitlis1">20,000</div>
-                      <div class="WXtitlis1">9月9日</div>
-                  </li>
-                
-                  <li class="WXCon-lis clear">
-                      <div class="WXtitlis1">XX</div>
-                      <div class="WXtitlis1 WXtitlis2">02金融</div>
-                      <div class="WXtitlis1">2,000</div>
-                      <div class="WXtitlis1">9月9日</div>
-                  </li>
-                  <li class="WXCon-lis clear">
-                      <div class="WXtitlis1">XX</div>
-                      <div class="WXtitlis1 WXtitlis2">92审计</div>
-                      <div class="WXtitlis1">20,000</div>
-                      <div class="WXtitlis1">9月9日</div>
-                  </li>
-                
-                  <li class="WXCon-lis clear">
-                      <div class="WXtitlis1">XX</div>
-                      <div class="WXtitlis1 WXtitlis2">02金融</div>
-                      <div class="WXtitlis1">2,000</div>
-                      <div class="WXtitlis1">9月9日</div>
-                  </li>
-                  <li class="WXCon-lis clear">
-                      <div class="WXtitlis1">XX</div>
-                      <div class="WXtitlis1 WXtitlis2">92审计</div>
-                      <div class="WXtitlis1">20,000</div>
-                      <div class="WXtitlis1">9月9日</div>
-                  </li>
-                
-                  <li class="WXCon-lis clear">
-                      <div class="WXtitlis1">XX</div>
-                      <div class="WXtitlis1 WXtitlis2">02金融</div>
-                      <div class="WXtitlis1">2,000</div>
-                      <div class="WXtitlis1">9月9日</div>
-                  </li>
-                  <li class="WXCon-lis clear">
-                      <div class="WXtitlis1">XX</div>
-                      <div class="WXtitlis1 WXtitlis2">92审计</div>
-                      <div class="WXtitlis1">20,000</div>
-                      <div class="WXtitlis1">9月9日</div>
-                  </li>
-                
-                  <li class="WXCon-lis clear">
-                      <div class="WXtitlis1">XX</div>
-                      <div class="WXtitlis1 WXtitlis2">02金融</div>
-                      <div class="WXtitlis1">2,000</div>
-                      <div class="WXtitlis1">9月9日</div>
-                  </li>
-                  <li class="WXCon-lis clear">
-                      <div class="WXtitlis1">XX</div>
-                      <div class="WXtitlis1 WXtitlis2">92审计</div>
-                      <div class="WXtitlis1">20,000</div>
-                      <div class="WXtitlis1">9月9日</div>
-                  </li>
-                
-                  <li class="WXCon-lis clear">
-                      <div class="WXtitlis1">XX</div>
-                      <div class="WXtitlis1 WXtitlis2">02金融</div>
-                      <div class="WXtitlis1">2,000</div>
-                      <div class="WXtitlis1">9月9日</div>
-                  </li>
-                  <li class="WXCon-lis clear">
-                      <div class="WXtitlis1">XX</div>
-                      <div class="WXtitlis1 WXtitlis2">92审计</div>
-                      <div class="WXtitlis1">20,000</div>
-                      <div class="WXtitlis1">9月9日</div>
-                  </li>
-                
-                  <li class="WXCon-lis clear">
-                      <div class="WXtitlis1">XX</div>
-                      <div class="WXtitlis1 WXtitlis2">02金融</div>
-                      <div class="WXtitlis1">2,000</div>
-                      <div class="WXtitlis1">9月9日</div>
-                  </li>
-                  <li class="WXCon-lis clear">
-                      <div class="WXtitlis1">XX</div>
-                      <div class="WXtitlis1 WXtitlis2">92审计</div>
-                      <div class="WXtitlis1">20,000</div>
-                      <div class="WXtitlis1">9月9日</div>
-                  </li>
-                
-                  <li class="WXCon-lis clear">
-                      <div class="WXtitlis1">XX</div>
-                      <div class="WXtitlis1 WXtitlis2">02金融</div>
-                      <div class="WXtitlis1">2,000</div>
-                      <div class="WXtitlis1">9月9日</div>
-                  </li>
-                  <li class="WXCon-lis clear">
-                      <div class="WXtitlis1">XX</div>
-                      <div class="WXtitlis1 WXtitlis2">92审计</div>
-                      <div class="WXtitlis1">20,000</div>
-                      <div class="WXtitlis1">9月9日</div>
-                  </li>
-                
-                  <li class="WXCon-lis clear">
-                      <div class="WXtitlis1">XX</div>
-                      <div class="WXtitlis1 WXtitlis2">02金融</div>
-                      <div class="WXtitlis1">2,000</div>
-                      <div class="WXtitlis1">9月9日</div>
-                  </li>
-                  <li class="WXCon-lis clear">
-                      <div class="WXtitlis1">XX</div>
-                      <div class="WXtitlis1 WXtitlis2">92审计</div>
-                      <div class="WXtitlis1">20,000</div>
-                      <div class="WXtitlis1">9月9日</div>
-                  </li>
-                
-                  <li class="WXCon-lis clear">
-                      <div class="WXtitlis1">XX</div>
-                      <div class="WXtitlis1 WXtitlis2">02金融</div>
-                      <div class="WXtitlis1">2,000</div>
-                      <div class="WXtitlis1">9月9日</div>
-                  </li>
-                  <li class="WXCon-lis clear">
-                      <div class="WXtitlis1">XX</div>
-                      <div class="WXtitlis1 WXtitlis2">92审计</div>
-                      <div class="WXtitlis1">20,000</div>
-                      <div class="WXtitlis1">9月9日</div>
-                  </li>
-                
-                  <li class="WXCon-lis clear">
-                      <div class="WXtitlis1">XX</div>
-                      <div class="WXtitlis1 WXtitlis2">02金融</div>
-                      <div class="WXtitlis1">2,000</div>
-                      <div class="WXtitlis1">9月9日</div>
-                  </li>
-                  <li class="WXCon-lis clear">
-                      <div class="WXtitlis1">XX</div>
-                      <div class="WXtitlis1 WXtitlis2">92审计</div>
-                      <div class="WXtitlis1">20,000</div>
-                      <div class="WXtitlis1">9月9日</div>
-                  </li>
-                
-                  <li class="WXCon-lis clear">
-                      <div class="WXtitlis1">XX</div>
-                      <div class="WXtitlis1 WXtitlis2">02金融</div>
-                      <div class="WXtitlis1">2,000</div>
-                      <div class="WXtitlis1">9月9日</div>
+        <div id="WXCon" v-if="donates">
+            <ul class="WXCon-list"  v-for="donate in donates" :key="donate.name">
+                  <li class="WXCon-lis clear" :class="{'strengthen': donate.money > 1000}">
+                      <div class="WXtitlis1">{{donate.name}}</div>
+                      <div class="WXtitlis1">{{donate.grade}}</div>
+                      <div class="WXtitlis1">{{donate.money}}</div>
+                      <div class="WXtitlis1">{{donate.date}}</div>
                   </li>
             </ul>
+        </div>
+        <div v-else class="net_error">
+            <p>服务器异常</p>
+            <p>请联系坚坚老师处理</p>
+            <p>电话：15650705562</p>
+            <p>微信：506177837</p>
         </div>
     </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "HelloWorld",
   data() {
     return {
-      msg: "Welcome to Your Vue.js App"
+      donates: undefined
     };
   },
+  created() {
+    this.initData();
+  },
   methods: {
+    /**
+     * 获取捐款名单
+     * https://www.jcbjxyh.cn/v1/donate/getDonateList
+     */
+    initData: function() {
+        this.getDonateList().then(data => {
+            this.donates = data;
+        });
+    },
+    getDonateList: function() {
+      return axios
+        // .get("/v1/donate/getDonateList")
+        .get("https://www.jcbjxyh.cn/v1/donate/getDonateList")
+        .then(function(response) {
+            console.log(JSON.stringify(response.data))
+            if(response.data.result === 1){
+                return response.data.data;
+            }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
     startmarquee: function(lh, speed, delay) {
       var t;
-      var oHeight = 6 * document.documentElement.style.fontSize; /** 6rem的高度 **/
+      var oHeight =
+        6 * document.documentElement.style.fontSize; /** 6rem的高度 **/
       var p = false;
       var o = document.getElementById("WXCon");
-      console.log(o)
       var preTop = 0;
       o.scrollTop = 0;
       function start() {
@@ -228,8 +98,8 @@ export default {
       setTimeout(start, delay);
     }
   },
-  mounted () {
-      this.startmarquee(20, 40, 50);
+  mounted() {
+    this.startmarquee(20, 40, 50);
   }
 };
 </script>
