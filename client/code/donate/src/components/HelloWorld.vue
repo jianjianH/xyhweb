@@ -49,6 +49,7 @@ export default {
      * https://www.jcbjxyh.cn/v1/donate/getDonateList
      */
     initData: function() {
+        MtaH5.clickStat('donate',{'show':'true'})
         this.getDonateList().then(data => {
             this.donates = data;
         });
