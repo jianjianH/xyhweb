@@ -21,7 +21,7 @@
                   </li>
             </ul>
         </div>
-        <div v-else class="net_error">
+        <div v-if="show_error" class="net_error">
             <p>服务器异常</p>
             <p>请联系坚坚老师处理</p>
             <p>电话：15650705562</p>
@@ -37,7 +37,8 @@ export default {
   name: "HelloWorld",
   data() {
     return {
-      donates: undefined
+      donates: undefined,
+      show_error: false
     };
   },
   created() {
@@ -49,12 +50,12 @@ export default {
      * https://www.jcbjxyh.cn/v1/donate/getDonateList
      */
     initData: function() {
-        MtaH5.clickStat('donate',{'show':'true'})
         this.getDonateList().then(data => {
             this.donates = data;
         });
     },
     getDonateList: function() {
+      let that = this;
       return axios
         // .get("/v1/donate/getDonateList")
         .get("https://www.jcbjxyh.cn/v1/donate/getDonateList")
@@ -62,10 +63,13 @@ export default {
             console.log(JSON.stringify(response.data))
             if(response.data.result === 1){
                 return response.data.data;
+            }else{
+              that.show_error = true
             }
         })
         .catch(function(error) {
           console.log(error);
+          that.show_error = true
         });
     },
     startmarquee: function(lh, speed, delay) {
