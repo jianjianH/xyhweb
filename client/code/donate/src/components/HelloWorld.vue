@@ -16,7 +16,7 @@
                   <li class="WXCon-lis clear">
                       <div class="WXtitlis1">{{donate.name}}</div>
                       <div class="WXtitlis1">{{donate.grade}}</div>
-                      <div class="WXtitlis1" :class="{'strengthen': donate.money > 1000}">{{donate.money}}</div>
+                      <div class="WXtitlis1">{{donate.money}}</div>
                       <div class="WXtitlis1">{{donate.date}}</div>
                   </li>
             </ul>
