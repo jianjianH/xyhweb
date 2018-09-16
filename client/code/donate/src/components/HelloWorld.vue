@@ -11,7 +11,7 @@
             <div class="WXtitlis">捐赠金额</div>
             <div class="WXtitlis">捐赠时间</div>
         </div>
-        <div id="WXCon" v-if="donates">
+        <div id="WXCon">
             <ul class="WXCon-list"  v-for="donate in donates" :key="donate.name">
                   <li class="WXCon-lis clear">
                       <div class="WXtitlis1">{{donate.name}}</div>
@@ -60,7 +60,6 @@ export default {
         // .get("/v1/donate/getDonateList")
         .get("https://www.jcbjxyh.cn/v1/donate/getDonateList")
         .then(function(response) {
-            console.log(JSON.stringify(response.data))
             if(response.data.result === 1){
                 return response.data.data;
             }else{
