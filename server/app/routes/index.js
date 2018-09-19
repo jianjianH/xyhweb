@@ -16,4 +16,9 @@ router.get('/test', index.test)
 const xyh = require('../controllers/xyh')
 router.get('/v1/donate/getDonateList', xyh.getDonateList)
 
+/**
+ * 2. 新闻
+ */
+router.get('/v1/news/getNewsList', xyh.getNewsList)
+
 module.exports = router
