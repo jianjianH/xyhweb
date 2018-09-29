@@ -1,3 +1,3 @@
 module.exports = {
-  port: 5000
+  port: __dirname.indexOf('test') ? 5001 : 5000
 }
