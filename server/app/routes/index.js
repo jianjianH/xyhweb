@@ -8,6 +8,7 @@ const router = require('koa-router')()
  */
 const index = require('../controllers/index')
 router.get('/test', index.test)
+router.get('/testlog', index.testlog)
 
 /**
  * 1. 捐赠

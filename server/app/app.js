@@ -6,7 +6,6 @@ const co = require('co')
 const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
-const logger = require('koa-logger')
 const debug = require('debug')('koa2:server')
 const path = require('path')
 const cors = require('koa-cors');
@@ -14,7 +13,31 @@ const cors = require('koa-cors');
 const config = require('./config')
 const response = require('./middlewares/response')
 const router = require('./routes')
-const port = process.env.PORT || config.port
+
+// 初始化log4js目录
+const initLog = require('./config/log_init')
+initLog.initLogPath();
+
+// log工具
+const logUtil = require('./utils/log_util');
+// logger
+app.use(async (ctx, next) => {
+  const start = new Date();
+  //响应时间
+  let ms = 0;
+  try {
+    //开始进入到下一个中间件
+    await next();
+
+    ms = new Date() - start;
+    logUtil.logResponse(ctx, ms);
+  } catch (error) {
+
+    ms = new Date() - start;
+    //记录异常日志
+    logUtil.logError(ctx, error, ms);
+  }
+});
 
 // error handler
 onerror(app)
@@ -25,25 +48,15 @@ app
   .use(response)
   .use(bodyparser())
   .use(json())
-  .use(logger())
-  // .use(require('koa-static')(__dirname + '/public'))
   .use(require('koa-static')(path.join(__dirname, './../../client')))
   .use(views(path.join(__dirname, '/views'), {
-    options: {settings: {views: path.join(__dirname, 'views')}},
-    map: {'hjs': 'hogan'},
+    options: { settings: { views: path.join(__dirname, 'views') } },
+    map: { 'hjs': 'hogan' },
     extension: 'hjs'
   }))
   .use(router.routes())
 
-// logger
-app.use(async (ctx, next) => {
-  const start = new Date()
-  await next()
-  const ms = new Date() - start
-  console.log(`${ctx.method} ${ctx.url} - $ms`)
-})
-
-app.on('error', function(err, ctx) {
+app.on('error', function (err, ctx) {
   console.log(err)
   logger.error('server error', err, ctx)
 })
