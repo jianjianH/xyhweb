@@ -29,7 +29,7 @@ module.exports = {
             "alwaysIncludePattern": true,
             "encoding":"utf-8",
             // 文件最大存储空间，当文件内容超过文件存储空间会自动生成一个文件类似test.log.1的序列自增长的文件
-            "maxLogSize": 10,
+            "maxLogSize": 1000,
             "numBackups": 3,
             "path":errorPath
         },
@@ -39,7 +39,7 @@ module.exports = {
             "pattern": "-yyyy-MM-dd.log",
             "alwaysIncludePattern": true,
             "encoding":"utf-8",
-            "maxLogSize": 10,
+            "maxLogSize": 1000,
             "numBackups": 3,
             "path":responsePath
         },
