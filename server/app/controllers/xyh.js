@@ -19,6 +19,19 @@ async function getDonateList(ctx, next) {
 }
 
 /**
+ * 为南昌校友会提供捐款接口
+ */
+const donatenc = JSON.parse(fs.readFileSync(path.join(__dirname, '../json/donatenc.json')))
+async function getDonateNcList(ctx, next) {
+    if(donatenc){
+        ctx.state = {
+            result: 1,
+            data: donatenc
+        }
+    }
+}
+
+/**
  * 2. 新闻相关接口
  * 目前只返回原创文章
  */
@@ -34,5 +47,6 @@ async function getNewsList (ctx, next) {
 
 module.exports = {
     getDonateList,
+    getDonateNcList,
     getNewsList
 }

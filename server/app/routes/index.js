@@ -16,6 +16,7 @@ router.get('/testlog', index.testlog)
 // 获取捐赠名单
 const xyh = require('../controllers/xyh')
 router.get('/v1/donate/getDonateList', xyh.getDonateList)
+router.get('/v1/donate/getDonateNcList', xyh.getDonateNcList)
 
 /**
  * 2. 新闻

@@ -12,13 +12,13 @@
             <div class="WXtitlis">筹款来源</div>
             <div class="WXtitlis">捐赠时间</div>
         </div>
-        <div v-if="!show_error" id="WXCon">
+        <div id="WXCon" v-if="!show_error">
             <ul class="WXCon-list"  v-for="donate in donates" :key="donate.name">
                   <li class="WXCon-lis clear">
                       <div class="WXtitlis1">{{donate.name}}</div>
                       <div class="WXtitlis1">{{donate.money}}</div>
                       <div class="WXtitlis1">{{donate.grade}}</div>
-                      <div class="WXtitlis1">{{donate.branch ? donate.branch: "北京校友会"}}</div>
+                      <div class="WXtitlis1">{{donate.branch ? donate.branch: "南昌校友会"}}</div>
                       <div class="WXtitlis1">{{donate.date}}</div>
                   </li>
             </ul>
@@ -60,7 +60,7 @@ export default {
       let that = this;
       return axios
         // .get("/v1/donate/getDonateList")
-        .get("https://www.jcbjxyh.cn/v1/donate/getDonateList")
+        .get("https://www.jcbjxyh.cn/v1/donate/getDonateNcList")
         .then(function(response) {
             if(response.data.result === 1){
                 return response.data.data;
