@@ -10,7 +10,6 @@
             <div class="WXtitlis">捐赠金额</div>
             <div class="WXtitlis">入学年级</div>
             <div class="WXtitlis">筹款来源</div>
-            <div class="WXtitlis">捐赠时间</div>
         </div>
         <div id="WXCon" v-if="!show_error">
             <ul class="WXCon-list"  v-for="donate in donates" :key="donate.name">
@@ -18,7 +17,6 @@
                       <div class="WXtitlis1">{{donate.name}}</div>
                       <div class="WXtitlis1">{{donate.money}}</div>
                       <div class="WXtitlis1">{{donate.grade}}</div>
-                      <div class="WXtitlis1">{{donate.branch ? donate.branch: "南昌校友会"}}</div>
                       <div class="WXtitlis1">{{donate.date}}</div>
                   </li>
             </ul>
