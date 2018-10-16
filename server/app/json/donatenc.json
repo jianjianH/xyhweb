@@ -1,16 +1,14 @@
 [
   {
-    "name": "张XX",
-    "grade": "88统计",
-    "money": "200",
-    "date": "10月15日",
-    "branch": "XX分会"
+    "name": "陆智娟",
+    "grade": "10MBA",
+    "money": "1000",
+    "date": "10月15日"
   },
   {
-    "name": "刘XX",
-    "grade": "08物流",
+    "name": "罗文明",
+    "grade": "02会计",
     "money": "1000",
-    "date": "10月15日",
-    "branch": "XX分会"
+    "date": "10月16日"
   }
 ]

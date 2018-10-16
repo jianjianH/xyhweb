@@ -9,7 +9,7 @@
             <div class="WXtitlis">姓名</div>
             <div class="WXtitlis">捐赠金额</div>
             <div class="WXtitlis">入学年级</div>
-            <div class="WXtitlis">筹款来源</div>
+            <div class="WXtitlis">捐赠时间</div>
         </div>
         <div id="WXCon" v-if="!show_error">
             <ul class="WXCon-list"  v-for="donate in donates" :key="donate.name">
@@ -28,6 +28,7 @@
             <p>微信：506177837</p>
         </div>
     </div>
+    <p class="power">Powered by <a href="https://jnehuang.cn">坚坚老师</a>！</p>
   </div>
 </template>
 
