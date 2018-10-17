@@ -30,6 +30,7 @@
             <p>微信：506177837</p>
         </div>
     </div>
+    <p class="power">Powered by <a href="https://jnehuang.cn">坚坚老师</a>！</p>
   </div>
 </template>
 

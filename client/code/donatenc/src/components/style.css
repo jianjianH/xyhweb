@@ -62,7 +62,7 @@ html, body {position: relative;height: 100%;color: #333;background-color: #f5f5f
     color: #fff;
 }
 #WXCon{
-    height: 6rem;
+    height: 5.5rem;
     border-radius: 4px;
     box-shadow: 0 0 5px #ccc;
     padding:0.16rem 0;
@@ -260,8 +260,8 @@ html, body {position: relative;height: 100%;color: #333;background-color: #f5f5f
 }
 
 .power {
-    position: absolute;
-    bottom: 0;
+    position: relative;
+    margin-top: 0.2rem;
     text-align: center;
     width: 100%;
     font-size: 0.24rem;
