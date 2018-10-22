@@ -23,4 +23,10 @@ router.get('/v1/donate/getDonateNcList', xyh.getDonateNcList)
  */
 router.get('/v1/news/getNewsList', xyh.getNewsList)
 
+/**
+ * 3. 足球队
+ */
+router.get('/v1/football/getPlayerList', xyh.getPlayerList)
+router.get('/v1/football/getPlayerPhotos', xyh.getPlayerPhotos)
+
 module.exports = router

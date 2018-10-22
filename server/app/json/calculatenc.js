@@ -12,5 +12,5 @@ for (let i = 0; i < donate.length; i++) {
 console.log("-------------------")
 console.log("目前收到的捐款汇总：")
 console.log("总捐款数：" + sum.toFixed(2))
-console.log("捐款人数：" + donate.length)
+console.log("捐款次数：" + donate.length)
 console.log("-------------------")
