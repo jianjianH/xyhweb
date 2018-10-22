@@ -69,6 +69,7 @@ for (var i = 0; i < playerList.length; i++) {
 
 async function getPlayerList (ctx, next) {
     ctx.state = {
+        result: 1,
         data: players
     }
 }
@@ -83,6 +84,7 @@ async function getPlayerPhotos (ctx, next) {
         }
     }
     ctx.state = {
+        result: 1,
         data: photos
     }
 }
