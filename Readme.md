@@ -1,5 +1,7 @@
 ##用于江财北京校友会后端服务##
 
+[校友会nodejs后台使用说明](https://www.jnehuang.cn/%E6%A0%A1%E5%8F%8B%E4%BC%9A/%E6%A0%A1%E5%8F%8B%E4%BC%9Anodejs%E5%90%8E%E5%8F%B0%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/)
+
 总结目前后端代码的目录结构：
 
 ```
