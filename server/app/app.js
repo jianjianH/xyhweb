@@ -56,7 +56,7 @@ app
   }))
   .use(router.routes())
 
-app.on('error', function (err, ctx) {
+app.on('error', (err, ctx) => {
   console.log(err)
   logger.error('server error', err, ctx)
 })
