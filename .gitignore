@@ -45,3 +45,6 @@ sh/
 sdk.config.json
 
 .idea/
+
+// db_config.js不提交
+server/app/config/db_config.js

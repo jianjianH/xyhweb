@@ -1,3 +1,7 @@
+// debug为false时，路径为: /home/jne/project/xyhweb/server/app
+let debug = __dirname.indexOf('home/jne') > -1 ? (_dirname.indexOf('test') > -1 ? true : false) : true;
+
 module.exports = {
-  port: __dirname.indexOf('test') > 0 ? 5001 : 5000
+  debug,
+  port: debug ? 5001 : 5000,
 }
