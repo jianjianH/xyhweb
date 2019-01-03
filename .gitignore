@@ -48,3 +48,4 @@ sdk.config.json
 
 // db_config.js不提交
 server/app/config/db_config.js
+server/app/config/dbtest_config.js
