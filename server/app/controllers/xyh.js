@@ -9,7 +9,7 @@ const fs = require('fs')
 const path = require('path')
 // 捐赠信息保存在json文件中
 const donate = JSON.parse(fs.readFileSync(path.join(__dirname, '../json/donate.json')))
-async function getDonateList(ctx, next) {
+let getDonateList = async (ctx, next) => {
     if(donate){
         ctx.state = {
             result: 1,
@@ -22,7 +22,7 @@ async function getDonateList(ctx, next) {
  * 为南昌校友会提供捐款接口
  */
 const donatenc = JSON.parse(fs.readFileSync(path.join(__dirname, '../json/donatenc.json')))
-async function getDonateNcList(ctx, next) {
+let getDonateNcList = async (ctx, next) => {
     if(donatenc){
         ctx.state = {
             result: 1,
@@ -37,8 +37,7 @@ async function getDonateNcList(ctx, next) {
  */
 // 读取新闻的json文件
 const newsList = JSON.parse(fs.readFileSync(path.join(__dirname, '../json/news.json')))
-
-async function getNewsList (ctx, next) {
+let getNewsList = async (ctx, next) => {
     ctx.state = {
         result: 1,
         data: newsList
@@ -67,14 +66,14 @@ for (var i = 0; i < playerList.length; i++) {
     players[i] = player
 }
 
-async function getPlayerList (ctx, next) {
+let getPlayerList = async (ctx, next) => {
     ctx.state = {
         result: 1,
         data: players
     }
 }
 
-async function getPlayerPhotos (ctx, next) {
+let getPlayerPhotos = async (ctx, next) => {
     const query = ctx.request.query
     let order = query.order
     let photos = []

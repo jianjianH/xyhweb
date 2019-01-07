@@ -11,26 +11,26 @@ let errorLogger = log4js.getLogger("errorLogger");
 let consoleLogger = log4js.getLogger();
 
 // 封装错误日志
-logUtil.logError = function (ctx, error, resTime) {
+logUtil.logError = (ctx, error, resTime) => {
     if (ctx && error) {
-        errorLogger.error(formatError(ctx, error, resTime || 0));
+        errorLogger.error(_formatError(ctx, error, resTime || 0));
     }
 };
 
 // 封装响应日志
-logUtil.logResponse = function (ctx, resTime) {
+logUtil.logResponse = (ctx, resTime) => {
     if (ctx) {
-        resLogger.info(formatRes(ctx, resTime || 0));
+        resLogger.info(_formatRes(ctx, resTime || 0));
     }
 };
 
-logUtil.logInfo = function (info) {
+logUtil.logInfo = (info) => {
     if (info) {
-        consoleLogger.info(formatInfo(info));
+        consoleLogger.info(_formatInfo(info));
     }
 };
 
-let formatInfo = function (info) {
+let _formatInfo = (info) => {
     let logText = new String();
     // 响应日志开始
     logText += "\n" + "***************info log start ***************" + "\n";
@@ -45,20 +45,20 @@ let formatInfo = function (info) {
 }
 
 // 格式化响应日志
-let formatRes = function (ctx, resTime) {
+let _formatRes = (ctx, resTime) => {
     let logText = new String();
     // 响应日志开始
     logText += "\n" + "*************** response log start ***************" + "\n";
 
     // 添加请求日志
-    logText += formatReqLog(ctx.request, resTime);
+    logText += _formatReqLog(ctx.request, resTime);
 
     // 响应状态码
     logText += "response status: " + ctx.status + "\n";
 
     // 响应内容
     // 只在测试环境打印响应内容，正式环境log太多了
-    if(__dirname.indexOf('test') > 0) logText += "response body: " + "\n" + JSON.stringify(ctx.body) + "\n";
+    if (__dirname.indexOf('test') > 0) logText += "response body: " + "\n" + JSON.stringify(ctx.body) + "\n";
 
     // 响应日志结束
     logText += "*************** response log end ***************" + "\n";
@@ -67,14 +67,14 @@ let formatRes = function (ctx, resTime) {
 }
 
 // 格式化错误日志
-let formatError = function (ctx, err, resTime) {
+let _formatError = (ctx, err, resTime) => {
     let logText = new String();
 
     // 错误信息开始
     logText += "\n" + "*************** error log start ***************" + "\n";
 
     // 添加请求日志
-    logText += formatReqLog(ctx.request, resTime || 0);
+    logText += _formatReqLog(ctx.request, resTime || 0);
 
     // 错误名称
     logText += "err name: " + err.name + "\n";
@@ -90,7 +90,7 @@ let formatError = function (ctx, err, resTime) {
 };
 
 // 格式化请求日志
-let formatReqLog = function (req, resTime) {
+let _formatReqLog = (req, resTime) => {
     let logText = new String();
 
     let method = req.method;
