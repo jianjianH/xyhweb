@@ -1,7 +1,7 @@
 <template>
   <div class="centerView2">
     <div class="WXtop">
-        <img src="http://pb0geuvxr.bkt.clouddn.com/mp/xyhweb/donation/ganen.png">
+        <img src="http://qn.jcbjxyh.cn/mp/xyhweb/donation/ganen.png">
     </div>
     <div class="WXbody">
         <div class="WXDescrible">纪念母校复校40周年、建校95周年</div>
