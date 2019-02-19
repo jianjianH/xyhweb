@@ -88,10 +88,47 @@ let getPlayerPhotos = async (ctx, next) => {
     }
 }
 
+/**
+ * 用户登录
+ * @param {} ctx 
+ * @param {*} next 
+ */
+let login = async (ctx,next) => {
+
+    // const query = ctx.request.query;//请求参数
+    // let code = query.code;
+    let res = wxLogin("code");
+    console.log(res);
+    // console.log("测试");
+    ctx.state = {
+        result: 1,
+        data:""
+    }
+}
+
+/**
+ * 调用微信登录的api
+ * @param {*} code 
+ */
+const http = require("../utils/http")
+let wxLogin = function(code){
+
+    let wxAppId = "wxa0faf64a2bcaf71a";
+    let wxSecret = "";
+    let url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + wxAppId + "&secret=" + wxSecret +
+    "&js_code="+ code +"&grant_type=authorization_code";
+    let res = http.get2(url,null,null,1);
+
+    //保存数据库
+    return res;
+    console.log(res);
+}
+
 module.exports = {
     getDonateList,
     getDonateNcList,
     getNewsList,
     getPlayerList,
     getPlayerPhotos,
+    login
 }

@@ -29,4 +29,9 @@ router.get('/v1/news/getNewsList', xyh.getNewsList)
 router.get('/v1/football/getPlayerList', xyh.getPlayerList)
 router.get('/v1/football/getPlayerPhotos', xyh.getPlayerPhotos)
 
+/**
+ * 4. 用户登录
+ */
+router.get('/v2/xyh/login',xyh.login)
+
 module.exports = router
