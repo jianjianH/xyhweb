@@ -1,4 +1,4 @@
-# Logs
+﻿# Logs
 logs
 *.log
 npm-debug.log*
@@ -49,3 +49,5 @@ sdk.config.json
 // db_config.js不提交
 server/app/config/db_config.js
 server/app/config/dbtest_config.js
+server/app/config/app_config.js
+

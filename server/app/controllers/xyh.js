@@ -10,7 +10,7 @@ const path = require('path')
 // 捐赠信息保存在json文件中
 const donate = JSON.parse(fs.readFileSync(path.join(__dirname, '../json/donate.json')))
 let getDonateList = async (ctx, next) => {
-    if(donate){
+    if (donate) {
         ctx.state = {
             result: 1,
             data: donate
@@ -23,7 +23,7 @@ let getDonateList = async (ctx, next) => {
  */
 const donatenc = JSON.parse(fs.readFileSync(path.join(__dirname, '../json/donatenc.json')))
 let getDonateNcList = async (ctx, next) => {
-    if(donatenc){
+    if (donatenc) {
         ctx.state = {
             result: 1,
             data: donatenc
@@ -89,40 +89,85 @@ let getPlayerPhotos = async (ctx, next) => {
 }
 
 /**
- * 用户登录
- * @param {} ctx 
- * @param {*} next 
- */
-let login = async (ctx,next) => {
-
-    // const query = ctx.request.query;//请求参数
-    // let code = query.code;
-    let res = wxLogin("code");
-    console.log(res);
-    // console.log("测试");
-    ctx.state = {
-        result: 1,
-        data:""
-    }
-}
-
-/**
  * 调用微信登录的api
  * @param {*} code 
  */
-const http = require("../utils/http")
-let wxLogin = function(code){
-
-    let wxAppId = "wxa0faf64a2bcaf71a";
-    let wxSecret = "";
+const http = require("../utils/http");
+const app_config = require("../config/app_config").config;
+let wxLogin = (code, callback) => {
+    let wxAppId = app_config.AppID;
+    let wxSecret = app_config.AppSecret;
     let url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + wxAppId + "&secret=" + wxSecret +
-    "&js_code="+ code +"&grant_type=authorization_code";
-    let res = http.get2(url,null,null,1);
-
-    //保存数据库
-    return res;
-    console.log(res);
+        "&js_code=" + code + "&grant_type=authorization_code";
+    http.get2(url, null, (success, jsonStr) => {
+        console.log(jsonStr)
+        if (success) {
+            // 接口调用成功
+            let json = JSON.parse(JSON.stringify(jsonStr));
+            if (json.errcode) {
+                // { errcode: 40163, errmsg: 'code been used, hints: [ req_id: TlLAKnACe-Q1gs9 ]' }
+                // 错误回调
+                let callJson = { "result": -1, "data": JSON.stringify(json) };
+                callback(callJson);
+            } else {
+                // { session_key: 'V5+NDP7UYa/eH7xZH5goAw==', openid: 'ozTUr5MGg1rLI17T8w5DwsbgO4z8' }
+                // 成功回调
+                let callJson = { "result": 1, "data": JSON.stringify(json) };
+                callback(callJson);
+            }
+        } else {
+            // 接口调用失败
+            // 错误回调
+            let callJson = { "result": -2, "data": jsonStr };
+            callback(callJson);
+        }
+    }, true);
 }
+
+/**
+ * 4. 用户登录
+ * @param {} ctx 
+ * @param {*} next 
+ */
+let login = async (ctx, next) => {
+    const query = ctx.request.query;//请求参数
+    let code = query.code;
+    wxLogin(code, (json) => {
+        console.log("login callback:" + JSON.stringify(json))
+        if (json.result === -2) {
+            // 网络请求失败
+            // todo错误怎么使用
+            let error = json.data;
+        } else if (json.result === -1) {
+            // 微信后台返回错误
+            // { errcode: 40163, errmsg: 'code been used, hints: [ req_id: TlLAKnACe-Q1gs9 ]' }
+            // todo完善返回值
+            let data = json.data;
+            let errcode = data.errcode;
+            let errmsg = data.errmsg;
+
+        } else if (json.result === 1) {
+            // 微信返回成功
+            // { session_key: 'V5+NDP7UYa/eH7xZH5goAw==', openid: 'ozTUr5MGg1rLI17T8w5DwsbgO4z8' }
+            // todo完善返回值
+            let data = json.data;
+            let session_key = data.session_key;
+            let openid = data.openid;
+
+        }
+    });
+
+    // todo 接口返回值
+    ctx.state = {
+        result: 1,
+        data: ""
+    }
+}
+
+// 接口测试
+// wxLogin('061PHhAi2AfnuC00jGCi2QVbAi2PHhAa', (json) => {
+//     console.log(json)
+// });
 
 module.exports = {
     getDonateList,
