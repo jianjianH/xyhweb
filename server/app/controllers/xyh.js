@@ -94,15 +94,68 @@ let getPlayerPhotos = async (ctx, next) => {
  * @param {*} next 
  */
 let login = async (ctx,next) => {
+    let login = async (ctx, next) => {
+        const query = ctx.request.query;//请求参数
+        let code = query.code;
+        //返回的对象
+        let returnBody = {
+            'errCode': undefined,
+            'Msg': undefined,
+            'isSuccess': undefined
+        }
+        wxLogin(code, (json) => {
+            console.log("login callback:" + JSON.stringify(json))
+            if (json.result === -2) {
+                // 网络请求失败
+                // todo错误怎么使用
+                let error = json.data;
 
-    // const query = ctx.request.query;//请求参数
-    // let code = query.code;
-    let res = wxLogin("code");
-    console.log(res);
-    // console.log("测试");
-    ctx.state = {
-        result: 1,
-        data:""
+                //返回提示语"网络不稳定，请稍后重试"
+                returnBody.errCode = '10001';
+                returnBody.isSuccess = false;
+                returnBody.Msg = '网络不稳定，请稍后重试';
+                ctx.state = {
+                    result: 1,
+                    data: returnBody
+                }
+            } else if (json.result === -1) {
+                // 微信后台返回错误
+                // { errcode: 40163, errmsg: 'code been used, hints: [ req_id: TlLAKnACe-Q1gs9 ]' }
+                // todo完善返回值
+                let data = json.data;
+                let errcode = data.errcode;
+                let errmsg = data.errmsg;
+
+                //返回提示语"请重新登录"
+                returnBody.errCode = errcode;
+                returnBody.isSuccess = false;
+                returnBody.Msg = '请重新登录';
+                ctx.state = {
+                    result: 1,
+                    data: returnBody
+                }
+
+    
+            } else if (json.result === 1) {
+                // 微信返回成功
+                // { session_key: 'V5+NDP7UYa/eH7xZH5goAw==', openid: 'ozTUr5MGg1rLI17T8w5DwsbgO4z8' }
+                // todo完善返回值
+                let data = json.data;
+                let session_key = data.session_key;
+                let openid = data.openid;
+
+                //保存数据库中
+
+                 //返回提示语"请重新登录"
+                 returnBody.isSuccess = true;
+                 returnBody.Msg = '登录成功';
+                 ctx.state = {
+                     result: 1,
+                     data: returnBody
+                 }
+    
+            }
+        });
     }
 }
 
@@ -110,18 +163,36 @@ let login = async (ctx,next) => {
  * 调用微信登录的api
  * @param {*} code 
  */
-const http = require("../utils/http")
-let wxLogin = function(code){
-
-    let wxAppId = "wxa0faf64a2bcaf71a";
-    let wxSecret = "";
+const http = require("../utils/http");
+const app_config = require("../config/app_config").config;
+let wxLogin = (code, callback) => {
+    let wxAppId = app_config.AppID;
+    let wxSecret = app_config.AppSecret;
     let url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + wxAppId + "&secret=" + wxSecret +
-    "&js_code="+ code +"&grant_type=authorization_code";
-    let res = http.get2(url,null,null,1);
-
-    //保存数据库
-    return res;
-    console.log(res);
+        "&js_code=" + code + "&grant_type=authorization_code";
+    http.get2(url, null, (success, jsonStr) => {
+        console.log(jsonStr)
+        if (success) {
+            // 接口调用成功
+            let json = JSON.parse(JSON.stringify(jsonStr));
+            if (json.errcode) {
+                // { errcode: 40163, errmsg: 'code been used, hints: [ req_id: TlLAKnACe-Q1gs9 ]' }
+                // 错误回调
+                let callJson = { "result": -1, "data": JSON.stringify(json) };
+                callback(callJson);
+            } else {
+                // { session_key: 'V5+NDP7UYa/eH7xZH5goAw==', openid: 'ozTUr5MGg1rLI17T8w5DwsbgO4z8' }
+                // 成功回调
+                let callJson = { "result": 1, "data": JSON.stringify(json) };
+                callback(callJson);
+            }
+        } else {
+            // 接口调用失败
+            // 错误回调
+            let callJson = { "result": -2, "data": jsonStr };
+            callback(callJson);
+        }
+    }, true);
 }
 
 module.exports = {

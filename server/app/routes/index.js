@@ -32,6 +32,6 @@ router.get('/v1/football/getPlayerPhotos', xyh.getPlayerPhotos)
 /**
  * 4. 用户登录
  */
-router.get('/v2/xyh/login',xyh.login)
+router.get('/v1/user/login', xyh.login)
 
 module.exports = router

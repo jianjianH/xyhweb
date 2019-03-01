@@ -106,6 +106,7 @@ let getAccountInfo = (account, password, callback) => {
     callback = _checkParams(callback, account, password);
     if (callback == undefined) return;
 
+
     let sql = 'SELECT * FROM t_accounts WHERE account = "' + account + '"';
     query(sql, (err, rows, fields) => {
         if (err) {
@@ -129,6 +130,93 @@ let getAccountInfo = (account, password, callback) => {
         callback(rows[0]);
     });
 };
+
+/**
+ * 通用的查询单个或者列表的数据方法
+ * @param {*} paramObject 参数对象
+ * @param {*} tableName 表名
+ * @param {*} callback 回调函数
+ */
+let select = (paramObject,tableName,callback) => {
+
+    //待完善
+    let sql = 'SELECT * FROM ' + tableName + ' VALUE account = " + account + "';
+    query(sql, (err, rows, fields) => {
+        if (err) {
+            callback(null);
+            throw err;
+        }
+
+        if (rows.length == 0) {
+            callback(null);
+            return;
+        }
+
+        if (fields != null) {
+            
+        }
+
+        callback(rows[0]);
+    });
+}
+
+/**
+ * 通用的插入数据方法
+ * @param {*} paramObject 参数对象
+ * @param {*} tableName 表名
+ * @param {*} callback 回调函数
+ */
+let insert = (paramObject,tableName,callback) => {
+
+    //待完善
+    let sql = 'SELECT * FROM ' + tableName + ' WHERE account = " + account + "';
+    query(sql, (err, rows, fields) => {
+        if (err) {
+            callback(null);
+            throw err;
+        }
+
+        if (rows.length == 0) {
+            callback(null);
+            return;
+        }
+
+        if (fields != null) {
+            
+        }
+
+        callback(rows[0]);
+    });
+}
+
+/**
+ * 通用的修改数据方法
+ * @param {*} paramObject 参数对象
+ * @param {*} tableName 表名
+ * @param {*} callback 回调函数
+ */
+let update = (paramObject,tableName,callback) => {
+
+    //待完善
+    let sql = 'UPDATE  ' + tableName + ' SET account = " + account + "';
+    query(sql, (err, rows, fields) => {
+        if (err) {
+            callback(null);
+            throw err;
+        }
+
+        if (rows.length == 0) {
+            callback(null);
+            return;
+        }
+
+        if (fields != null) {
+            
+        }
+
+        callback(rows[0]);
+    });
+}
 
 module.exports = {
 	query,
