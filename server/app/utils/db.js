@@ -19,9 +19,9 @@ let query = (sql, callback) => {
             callback(err, null, null);
         } else {
             conn.query(sql, (qerr, vals, fields) => {
-                // 释放连接  
+                // 释放连接
                 conn.release();
-                // 事件驱动回调  
+                // 事件驱动回调
                 callback(qerr, vals, fields);
             });
         }
@@ -133,30 +133,22 @@ let getAccountInfo = (account, password, callback) => {
 
 /**
  * 通用的查询单个或者列表的数据方法
- * @param {*} paramObject 参数对象
- * @param {*} tableName 表名
+ * @param {*} sql 参数对象
  * @param {*} callback 回调函数
  */
-let select = (paramObject,tableName,callback) => {
-
-    //待完善
-    let sql = 'SELECT * FROM ' + tableName + ' VALUE account = " + account + "';
-    query(sql, (err, rows, fields) => {
+let select = (sql, callback) => {
+    query(sql, (err, result) => {
         if (err) {
             callback(null);
             throw err;
         }
 
-        if (rows.length == 0) {
+        if (result.length == 0) {
             callback(null);
             return;
+        } else {
+            callback(result);
         }
-
-        if (fields != null) {
-            
-        }
-
-        callback(rows[0]);
     });
 }
 
@@ -166,26 +158,35 @@ let select = (paramObject,tableName,callback) => {
  * @param {*} tableName 表名
  * @param {*} callback 回调函数
  */
-let insert = (paramObject,tableName,callback) => {
+let insert = (paramObject, tableName, callback) => {
+    for(let i in paramObject) {
+        callback = _checkParams(callback, paramObject[i]);
+        if (callback === undefined) return;
+    }
 
-    //待完善
-    let sql = 'SELECT * FROM ' + tableName + ' WHERE account = " + account + "';
+    let fields = '';
+    let values = '';
+    for(let k in paramObject){
+        fields += k + ',';
+        values = values + "'" + paramObject[k] + "',";
+    }
+    fields = fields.slice(0, -1);
+    values = values.slice(0, -1);
+    let sql = "INSERT INTO " + tableName + '(' + fields + ') VALUES(' + values + ')';
+    console.log('sql:' + sql)
     query(sql, (err, rows, fields) => {
         if (err) {
-            callback(null);
+            // 重复键名称'%s'
+            if (err.code == 'ER_DUP_ENTRY') {
+                callback(false);
+                return;
+            }
+            callback(false);
             throw err;
         }
-
-        if (rows.length == 0) {
-            callback(null);
-            return;
+        else {
+            callback(true);
         }
-
-        if (fields != null) {
-            
-        }
-
-        callback(rows[0]);
     });
 }
 
@@ -195,33 +196,41 @@ let insert = (paramObject,tableName,callback) => {
  * @param {*} tableName 表名
  * @param {*} callback 回调函数
  */
-let update = (paramObject,tableName,callback) => {
+let update = (paramObject, tableName, where, callback) => {
+    for(let k in paramObject) {
+        callback = _checkParams(callback, paramObject[k]);
+        if (callback === undefined) return;
+    }
 
-    //待完善
-    let sql = 'UPDATE  ' + tableName + ' SET account = " + account + "';
+    let params = '';
+    let whereStr = '';
+    for(let i in paramObject){
+        params += i + "='" + paramObject[i] + "',";
+    }
+    params = params.slice(0,-1);
+    for(let j in where){
+        whereStr += j + "='" + where[j] + "'";
+    }
+    // update table set username='admin2',age='55' where id="5";
+    let sql = "UPDATE "+ tableName + ' SET ' + params + ' WHERE ' + whereStr;
+    console.log('sql:' + sql)
     query(sql, (err, rows, fields) => {
         if (err) {
-            callback(null);
+            callback(false);
             throw err;
+        } else {
+            callback(true);
         }
-
-        if (rows.length == 0) {
-            callback(null);
-            return;
-        }
-
-        if (fields != null) {
-            
-        }
-
-        callback(rows[0]);
     });
 }
 
 module.exports = {
-	query,
+    query,
     init,
     isAccountExist,
     createAccount,
     getAccountInfo,
+    select,
+    insert,
+    update,
 }

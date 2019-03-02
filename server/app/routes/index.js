@@ -34,4 +34,9 @@ router.get('/v1/football/getPlayerPhotos', xyh.getPlayerPhotos)
  */
 router.get('/v1/user/login', xyh.login)
 
+// todo 测试数据库操作
+router.get('/v1/testAdd', xyh.testAdd)
+router.get('/v1/testQuery', xyh.testQuery)
+router.get('/v1/testUpdate', xyh.testUpdate)
+
 module.exports = router
