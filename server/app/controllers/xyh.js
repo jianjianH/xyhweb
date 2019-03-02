@@ -7,10 +7,10 @@
  */
 const fs = require('fs')
 const path = require('path')
-// 捐赠信息保存在json文件中
+// 捐赠信息保存在json文件�
 const donate = JSON.parse(fs.readFileSync(path.join(__dirname, '../json/donate.json')))
 let getDonateList = async (ctx, next) => {
-    if (donate) {
+    if(donate){
         ctx.state = {
             result: 1,
             data: donate
@@ -23,7 +23,7 @@ let getDonateList = async (ctx, next) => {
  */
 const donatenc = JSON.parse(fs.readFileSync(path.join(__dirname, '../json/donatenc.json')))
 let getDonateNcList = async (ctx, next) => {
-    if (donatenc) {
+    if(donatenc){
         ctx.state = {
             result: 1,
             data: donatenc
@@ -33,7 +33,7 @@ let getDonateNcList = async (ctx, next) => {
 
 /**
  * 2. 新闻相关接口
- * 目前只返回原创文章
+ * 目前只返回原创文�
  */
 // 读取新闻的json文件
 const newsList = JSON.parse(fs.readFileSync(path.join(__dirname, '../json/news.json')))
@@ -45,7 +45,7 @@ let getNewsList = async (ctx, next) => {
 }
 
 /**
- * 3. 足球队相关接口
+ * 3. 足球队相关接�
  */
 const playerList = JSON.parse(fs.readFileSync(path.join(__dirname, '../json/football.json')))
 // 获取用户列表，目的是将playerList中photos字段去除
@@ -89,6 +89,77 @@ let getPlayerPhotos = async (ctx, next) => {
 }
 
 /**
+ * 用户登录
+ * @param {} ctx 
+ * @param {*} next 
+ */
+let login = async (ctx,next) => {
+    let login = async (ctx, next) => {
+        const query = ctx.request.query;//请求参数
+        let code = query.code;
+        //返回的对�
+        let returnBody = {
+            'errCode': undefined,
+            'Msg': undefined,
+            'isSuccess': undefined
+        }
+        wxLogin(code, (json) => {
+            console.log("login callback:" + JSON.stringify(json))
+            if (json.result === -2) {
+                // 网络请求失败
+                // todo错误怎么使用
+                let error = json.data;
+
+                //返回提示�网络不稳定，请稍后重�
+                returnBody.errCode = '10001';
+                returnBody.isSuccess = false;
+                returnBody.Msg = '网络不稳定，请稍后重�;
+                ctx.state = {
+                    result: 1,
+                    data: returnBody
+                }
+            } else if (json.result === -1) {
+                // 微信后台返回错误
+                // { errcode: 40163, errmsg: 'code been used, hints: [ req_id: TlLAKnACe-Q1gs9 ]' }
+                // todo完善返回�
+                let data = json.data;
+                let errcode = data.errcode;
+                let errmsg = data.errmsg;
+
+                //返回提示�请重新登�
+                returnBody.errCode = errcode;
+                returnBody.isSuccess = false;
+                returnBody.Msg = '请重新登�;
+                ctx.state = {
+                    result: 1,
+                    data: returnBody
+                }
+
+    
+            } else if (json.result === 1) {
+                // 微信返回成功
+                // { session_key: 'V5+NDP7UYa/eH7xZH5goAw==', openid: 'ozTUr5MGg1rLI17T8w5DwsbgO4z8' }
+                // todo完善返回�
+                let data = json.data;
+                let session_key = data.session_key;
+                let openid = data.openid;
+
+                //保存数据库中
+
+                 //返回提示�请重新登�
+                 returnBody.isSuccess = true;
+                 returnBody.Msg = '登录成功';
+                 ctx.state = {
+                     result: 1,
+                     data: returnBody
+                 }
+    
+            }
+        });
+    }
+}
+
+/**
  * 调用微信登录的api
  * @param {*} code 
  */
@@ -123,51 +194,6 @@ let wxLogin = (code, callback) => {
         }
     }, true);
 }
-
-/**
- * 4. 用户登录
- * @param {} ctx 
- * @param {*} next 
- */
-let login = async (ctx, next) => {
-    const query = ctx.request.query;//请求参数
-    let code = query.code;
-    wxLogin(code, (json) => {
-        console.log("login callback:" + JSON.stringify(json))
-        if (json.result === -2) {
-            // 网络请求失败
-            // todo错误怎么使用
-            let error = json.data;
-        } else if (json.result === -1) {
-            // 微信后台返回错误
-            // { errcode: 40163, errmsg: 'code been used, hints: [ req_id: TlLAKnACe-Q1gs9 ]' }
-            // todo完善返回值
-            let data = json.data;
-            let errcode = data.errcode;
-            let errmsg = data.errmsg;
-
-        } else if (json.result === 1) {
-            // 微信返回成功
-            // { session_key: 'V5+NDP7UYa/eH7xZH5goAw==', openid: 'ozTUr5MGg1rLI17T8w5DwsbgO4z8' }
-            // todo完善返回值
-            let data = json.data;
-            let session_key = data.session_key;
-            let openid = data.openid;
-
-        }
-    });
-
-    // todo 接口返回值
-    ctx.state = {
-        result: 1,
-        data: ""
-    }
-}
-
-// 接口测试
-// wxLogin('061PHhAi2AfnuC00jGCi2QVbAi2PHhAa', (json) => {
-//     console.log(json)
-// });
 
 module.exports = {
     getDonateList,
