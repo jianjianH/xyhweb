@@ -93,6 +93,7 @@ let getPlayerPhotos = async (ctx, next) => {
  * @param {} ctx
  * @param {*} next
  */
+const db = require("../utils/db");
 let login = async (ctx, next) => {
     // 请求参数
     const query = ctx.request.query;
@@ -140,14 +141,47 @@ let login = async (ctx, next) => {
             let openid = data.openid;
 
             // todo 保存数据库中
-
-            // 返回提示语"请重新登录"
-            returnBody.isSuccess = 1;
-            returnBody.Msg = '登录成功';
-            ctx.state = {
-                result: 1,
-                data: returnBody
-            }
+            //调用db.js中的插入方法
+            let date = new Date();//获取当前时间
+            //根据openid查询数据库是否有值，无值则插入
+            let sql = 'SELECT * FROM T_APPLET_USER WHERE openid = "' + openid + '"';
+            db.select(sql,(result)=>{
+                //数据库无值，插入
+                if(result == null){
+                    let paramObject = {
+                        "openid":openid,
+                        "user_status":1,//用户状态：0 已退出校友会；1 目前在校友会
+                        "create_time":date,
+                        "update_time":date
+                    }
+                    db.insert(paramObject,"T_APPLET_USER",(result)=>{
+                        //返回为true
+                        if(result){ 
+                            returnBody.isSuccess = 1;
+                            returnBody.Msg = '登录成功';
+                            ctx.state = {
+                                result: 1,
+                                data: returnBody
+                            }
+                        }else{
+                            returnBody.isSuccess = 0;
+                            returnBody.Msg = '登录失败，保存数据库失败';
+                            returnBody.errCode = '10002';
+                            ctx.state = {
+                                result: 0,
+                                data: returnBody
+                            }
+                        }
+                    }); 
+                }else {
+                    returnBody.isSuccess = 1;
+                            returnBody.Msg = '登录成功';
+                            ctx.state = {
+                                result: 1,
+                                data: returnBody
+                            }
+                }
+            });          
         }
     });
 }
