@@ -94,6 +94,7 @@ let getPlayerPhotos = async (ctx, next) => {
  * @param {*} next
  */
 const db = require("../utils/db");
+const moment = require('moment')
 let login = async (ctx, next) => {
     // 请求参数
     const query = ctx.request.query;
@@ -104,8 +105,17 @@ let login = async (ctx, next) => {
         'Msg': undefined,
         'isSuccess': undefined
     }
-    wxLogin(code, (json) => {
+
+    await wxLogin(code, (json) => {
         console.log("login callback:" + JSON.stringify(json))
+        // // todo
+        // returnBody.isSuccess = 1;
+        // returnBody.Msg = '登录成功';
+        // ctx.state = {
+        //     "result": 1,
+        //     "data": returnBody
+        // }
+
         if (json.result === -2) {
             // 网络请求失败
             let error = json.data;
@@ -118,6 +128,7 @@ let login = async (ctx, next) => {
                 result: 1,
                 data: returnBody
             }
+            return;
         } else if (json.result === -1) {
             // 微信后台返回错误
             // { errcode: 40163, errmsg: 'code been used, hints: [ req_id: TlLAKnACe-Q1gs9 ]' }
@@ -136,27 +147,28 @@ let login = async (ctx, next) => {
         } else if (json.result === 1) {
             // 微信返回成功
             // { session_key: 'V5+NDP7UYa/eH7xZH5goAw==', openid: 'ozTUr5MGg1rLI17T8w5DwsbgO4z8' }
-            let data = json.data;
+            let data = JSON.parse(json.data);
             let session_key = data.session_key;
             let openid = data.openid;
 
-            // todo 保存数据库中
-            //调用db.js中的插入方法
-            let date = new Date();//获取当前时间
-            //根据openid查询数据库是否有值，无值则插入
+            // 保存数据库中
+            // 调用db.js中的插入方法
+            // 获取当前时间
+            let date = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
+            // 根据openid查询数据库是否有值，无值则插入
             let sql = 'SELECT * FROM T_APPLET_USER WHERE openid = "' + openid + '"';
-            db.select(sql,(result)=>{
-                //数据库无值，插入
-                if(result == null){
+            db.select(sql, (result) => {
+                // 数据库无值，插入
+                if(result == null) {
                     let paramObject = {
-                        "openid":openid,
-                        "user_status":1,//用户状态：0 已退出校友会；1 目前在校友会
-                        "create_time":date,
-                        "update_time":date
+                        "openid": openid,
+                        "user_status": 1,// 用户状态：0 已退出校友会；1 目前在校友会
+                        "create_time": date,
+                        "update_time": date
                     }
-                    db.insert(paramObject,"T_APPLET_USER",(result)=>{
-                        //返回为true
-                        if(result){ 
+                    db.insert(paramObject, "T_APPLET_USER", (result) => {
+                        // 返回为true
+                        if(result){
                             returnBody.isSuccess = 1;
                             returnBody.Msg = '登录成功';
                             ctx.state = {
@@ -172,16 +184,17 @@ let login = async (ctx, next) => {
                                 data: returnBody
                             }
                         }
-                    }); 
+                    });
                 }else {
                     returnBody.isSuccess = 1;
-                            returnBody.Msg = '登录成功';
-                            ctx.state = {
-                                result: 1,
-                                data: returnBody
-                            }
+                    returnBody.Msg = '登录成功';
+                    ctx.state = {
+                        "result": 1,
+                        "data": returnBody
+                    }
+                    console.log(ctx.state)
                 }
-            });          
+            });
         }
     });
 }
@@ -192,7 +205,7 @@ let login = async (ctx, next) => {
  */
 const http = require("../utils/http");
 const app_config = require("../config/app_config").config;
-let wxLogin = (code, callback) => {
+let wxLogin = async (code, callback) => {
     let wxAppId = app_config.AppID;
     let wxSecret = app_config.AppSecret;
     let url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + wxAppId + "&secret=" + wxSecret +
@@ -222,8 +235,7 @@ let wxLogin = (code, callback) => {
     }, true);
 }
 
-// todo 使用banner表测试
-const db = require('../utils/db');
+// 测试 使用banner表测试
 let testAdd = async (ctx, next) => {
   let paramObject = {
     "banner_type": 1,
