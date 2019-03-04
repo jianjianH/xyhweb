@@ -136,58 +136,54 @@ let getAccountInfo = (account, password, callback) => {
  * @param {*} sql 参数对象
  * @param {*} callback 回调函数
  */
-let select = (sql, callback) => {
+let select = (sql) => {
+  return new Promise((resolve, reject) => {
     query(sql, (err, result) => {
-        if (err) {
-            callback(null);
-            throw err;
-        }
+      if (err) {
+        console.log(err)
+        resolve(null);
+      }
 
-        if (result.length == 0) {
-            callback(null);
-            return;
-        } else {
-            callback(result);
-        }
+      if (result.length == 0) {
+        resolve(null);
+      } else {
+        resolve(result);
+      }
     });
+  });
 }
 
 /**
  * 通用的插入数据方法
  * @param {*} paramObject 参数对象
  * @param {*} tableName 表名
- * @param {*} callback 回调函数
  */
-let insert = (paramObject, tableName, callback) => {
-    for(let i in paramObject) {
-        callback = _checkParams(callback, paramObject[i]);
-        if (callback === undefined) return;
-    }
+let insert = (paramObject, tableName) => {
+    return new Promise((resolve, reject) => {
+      let fields = '';
+      let values = '';
+      for(let k in paramObject){
+          fields += k + ',';
+          values = values + "'" + paramObject[k] + "',";
+      }
+      fields = fields.slice(0, -1);
+      values = values.slice(0, -1);
+      let sql = "INSERT INTO " + tableName + '(' + fields + ') VALUES(' + values + ')';
+      console.log('sql:' + sql)
 
-    let fields = '';
-    let values = '';
-    for(let k in paramObject){
-        fields += k + ',';
-        values = values + "'" + paramObject[k] + "',";
-    }
-    fields = fields.slice(0, -1);
-    values = values.slice(0, -1);
-    let sql = "INSERT INTO " + tableName + '(' + fields + ') VALUES(' + values + ')';
-    console.log('sql:' + sql)
-    query(sql, (err, rows, fields) => {
+      query(sql, (err, rows, fields) => {
         if (err) {
             // 重复键名称'%s'
             if (err.code == 'ER_DUP_ENTRY') {
-                callback(false);
-                return;
+              resolve(false);
             }
-            callback(false);
-            throw err;
+            resolve(false);
         }
         else {
-            callback(true);
+          resolve(true);
         }
     });
+  })
 }
 
 /**

@@ -106,97 +106,86 @@ let login = async (ctx, next) => {
         'isSuccess': undefined
     }
 
-    await wxLogin(code, (json) => {
-        console.log("login callback:" + JSON.stringify(json))
-        // // todo
-        // returnBody.isSuccess = 1;
-        // returnBody.Msg = '登录成功';
-        // ctx.state = {
-        //     "result": 1,
-        //     "data": returnBody
-        // }
+    let json = await wxLogin(code);
+    console.log("login callback:" + JSON.stringify(json))
+    if (json.result === -2) {
+        // 网络请求失败
+        let error = json.data;
 
-        if (json.result === -2) {
-            // 网络请求失败
-            let error = json.data;
-
-            // 返回提示语"网络不稳定，请稍后重试"
-            returnBody.errCode = '10001';
-            returnBody.isSuccess = 0;
-            returnBody.Msg = '网络不稳定，请稍后重试' + error;
-            ctx.state = {
-                result: 1,
-                data: returnBody
-            }
-            return;
-        } else if (json.result === -1) {
-            // 微信后台返回错误
-            // { errcode: 40163, errmsg: 'code been used, hints: [ req_id: TlLAKnACe-Q1gs9 ]' }
-            let data = json.data;
-            let errcode = data.errcode;
-            let errmsg = data.errmsg;
-
-            // 返回提示语"请重新登录"
-            returnBody.errCode = errcode;
-            returnBody.isSuccess = 0;
-            returnBody.Msg = '请重新登录' + errmsg;
-            ctx.state = {
-                result: 1,
-                data: returnBody
-            }
-        } else if (json.result === 1) {
-            // 微信返回成功
-            // { session_key: 'V5+NDP7UYa/eH7xZH5goAw==', openid: 'ozTUr5MGg1rLI17T8w5DwsbgO4z8' }
-            let data = JSON.parse(json.data);
-            let session_key = data.session_key;
-            let openid = data.openid;
-
-            // 保存数据库中
-            // 调用db.js中的插入方法
-            // 获取当前时间
-            let date = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
-            // 根据openid查询数据库是否有值，无值则插入
-            let sql = 'SELECT * FROM T_APPLET_USER WHERE openid = "' + openid + '"';
-            db.select(sql, (result) => {
-                // 数据库无值，插入
-                if(result == null) {
-                    let paramObject = {
-                        "openid": openid,
-                        "user_status": 1,// 用户状态：0 已退出校友会；1 目前在校友会
-                        "create_time": date,
-                        "update_time": date
-                    }
-                    db.insert(paramObject, "T_APPLET_USER", (result) => {
-                        // 返回为true
-                        if(result){
-                            returnBody.isSuccess = 1;
-                            returnBody.Msg = '登录成功';
-                            ctx.state = {
-                                result: 1,
-                                data: returnBody
-                            }
-                        }else{
-                            returnBody.isSuccess = 0;
-                            returnBody.Msg = '登录失败，保存数据库失败';
-                            returnBody.errCode = '10002';
-                            ctx.state = {
-                                result: 0,
-                                data: returnBody
-                            }
-                        }
-                    });
-                }else {
-                    returnBody.isSuccess = 1;
-                    returnBody.Msg = '登录成功';
-                    ctx.state = {
-                        "result": 1,
-                        "data": returnBody
-                    }
-                    console.log(ctx.state)
-                }
-            });
+        // 返回提示语"网络不稳定，请稍后重试"
+        returnBody.errCode = '10001';
+        returnBody.isSuccess = 0;
+        returnBody.Msg = '网络不稳定，请稍后重试' + error;
+        ctx.state = {
+            result: 1,
+            data: returnBody
         }
-    });
+    } else if (json.result === -1) {
+        // 微信后台返回错误
+        // { errcode: 40163, errmsg: 'code been used, hints: [ req_id: TlLAKnACe-Q1gs9 ]' }
+        let data = json.data;
+        let errcode = data.errcode;
+        let errmsg = data.errmsg;
+
+        // 返回提示语"请重新登录"
+        returnBody.errCode = errcode;
+        returnBody.isSuccess = 0;
+        returnBody.Msg = '请重新登录' + errmsg;
+        ctx.state = {
+            result: 1,
+            data: returnBody
+        }
+    } else if (json.result === 1) {
+        // 微信返回成功
+        // { session_key: 'V5+NDP7UYa/eH7xZH5goAw==', openid: 'ozTUr5MGg1rLI17T8w5DwsbgO4z8' }
+        let data = JSON.parse(json.data);
+        let session_key = data.session_key;
+        let openid = data.openid;
+
+        // 保存数据库中
+        // 调用db.js中的插入方法
+        // 获取当前时间
+        let date = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
+        // 根据openid查询数据库是否有值，无值则插入
+        let sql = 'SELECT * FROM T_APPLET_USER WHERE openid = "' + openid + '"';
+        let result = await db.select(sql);
+        // 数据库无值，插入
+        if(result == null) {
+            let paramObject = {
+                "openid": openid,
+                "user_status": 1,// 用户状态：0 已退出校友会；1 目前在校友会
+                "create_time": date,
+                "update_time": date
+            }
+
+            let insertResult = await db.insert(paramObject, "T_APPLET_USER");
+            // 返回为true
+            if(insertResult){
+                returnBody.isSuccess = 1;
+                returnBody.Msg = '登录成功';
+                ctx.state = {
+                    result: 1,
+                    data: returnBody
+                }
+            }else{
+                returnBody.isSuccess = 0;
+                returnBody.Msg = '登录失败，保存数据库失败';
+                returnBody.errCode = '10002';
+                ctx.state = {
+                    result: 0,
+                    data: returnBody
+                }
+            }
+        }else {
+            returnBody.isSuccess = 1;
+            returnBody.Msg = '登录成功';
+            ctx.state = {
+                "result": 1,
+                "data": returnBody
+            }
+            console.log(ctx.state)
+        }
+    }
 }
 
 /**
@@ -205,34 +194,34 @@ let login = async (ctx, next) => {
  */
 const http = require("../utils/http");
 const app_config = require("../config/app_config").config;
-let wxLogin = async (code, callback) => {
+let wxLogin = async (code) => {
     let wxAppId = app_config.AppID;
     let wxSecret = app_config.AppSecret;
     let url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + wxAppId + "&secret=" + wxSecret +
         "&js_code=" + code + "&grant_type=authorization_code";
-    http.get2(url, null, (success, jsonStr) => {
-        console.log(jsonStr)
-        if (success) {
-            // 接口调用成功
-            let json = JSON.parse(JSON.stringify(jsonStr));
-            if (json.errcode) {
-                // { errcode: 40163, errmsg: 'code been used, hints: [ req_id: TlLAKnACe-Q1gs9 ]' }
-                // 错误回调
-                let callJson = { "result": -1, "data": JSON.stringify(json) };
-                callback(callJson);
-            } else {
-                // { session_key: 'V5+NDP7UYa/eH7xZH5goAw==', openid: 'ozTUr5MGg1rLI17T8w5DwsbgO4z8' }
-                // 成功回调
-                let callJson = { "result": 1, "data": JSON.stringify(json) };
-                callback(callJson);
-            }
-        } else {
-            // 接口调用失败
-            // 错误回调
-            let callJson = { "result": -2, "data": jsonStr };
-            callback(callJson);
-        }
-    }, true);
+    console.log('wxLogin')
+    let getResult = await http.get(url, null);
+    console.log('getResult:'+JSON.stringify(getResult))
+    if (getResult.success) {
+      // 接口调用成功
+      let json = JSON.parse(getResult.data);
+      if (json.errcode) {
+          // { errcode: 40163, errmsg: 'code been used, hints: [ req_id: TlLAKnACe-Q1gs9 ]' }
+          // 错误回调
+          let callJson = { "result": -1, "data": JSON.stringify(json) };
+          return callJson;
+      } else {
+          // { session_key: 'V5+NDP7UYa/eH7xZH5goAw==', openid: 'ozTUr5MGg1rLI17T8w5DwsbgO4z8' }
+          // 成功回调
+          let callJson = { "result": 1, "data": JSON.stringify(json) };
+          return callJson;
+      }
+    } else {
+        // 接口调用失败
+        // 错误回调
+        let callJson = { "result": -2, "data": jsonStr };
+        return callJson;
+    }
 }
 
 // 测试 使用banner表测试

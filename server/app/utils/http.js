@@ -55,58 +55,35 @@ let post = (host, port, path, data, callback) => {
 	req.end();
 };
 
-let get = (host, port, path, data, callback, safe) => {
-	let content = qs.stringify(data);
-	let options = {
-		hostname: host,
-		path: path + '?' + content,
-		method: 'GET'
-	};
-	if (port) {
-		options.port = port;
-	}
-	let proto = http;
-	if (safe) {
-		proto = https;
-	}
-	let req = proto.request(options, (res) => {
-		res.setEncoding('utf8');
-		res.on('data', (chunk) => {
-			//console.log('BODY: ' + chunk);
-			let json = JSON.parse(chunk);
-			callback(true, json);
-		});
-	});
+let get = (url, data) => {
+  return new Promise((resolve, reject) => {
+    let content = qs.stringify(data);
+    url = url + '?' + content;
+    let proto = https;
+    let req = proto.get(url, (res) => {
+      res.setEncoding('utf8');
+      res.on('data', (chunk) => {
+        let json = JSON.parse(chunk);
+        let result = {
+          'success': true,
+          'data': JSON.stringify(json)
+        }
+        console.log("get result:" + JSON.stringify(result))
+        resolve(result);
+      });
+    });
 
-	req.on('error', function (e) {
-		console.log('problem with request: ' + e.message);
-		callback(false, e);
-	});
+    req.on('error', (e) => {
+      let result = {
+        'success': false,
+        'data': e
+      }
+      console.log("get erro:" + JSON.stringify(result))
+      resolve(result);
+    });
 
-	req.end();
-};
-
-let get2 = (url, data, callback, safe) => {
-	let content = qs.stringify(data);
-	url = url + '?' + content;
-	let proto = http;
-	if (safe) {
-		proto = https;
-	}
-	let req = proto.get(url, (res) => {
-		res.setEncoding('utf8');
-		res.on('data', (chunk) => {
-			let json = JSON.parse(chunk);
-			callback(true, json);
-		});
-	});
-
-	req.on('error', (e) => {
-		console.log('problem with request: ' + e.message);
-		callback(false, e);
-	});
-
-	req.end();
+    req.end();
+  });
 };
 
 let send = (res, errcode, errmsg, data) => {
@@ -122,6 +99,5 @@ let send = (res, errcode, errmsg, data) => {
 module.exports = {
 	post,
 	get,
-	get2,
 	send,
 }
