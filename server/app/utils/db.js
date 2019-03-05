@@ -46,92 +46,6 @@ let init = () => {
 init();
 
 /**
- * 参数的非空判断
- */
-let _checkParams = (callback, ...args) => {
-    callback = callback == null ? nop : callback;
-    for(let i in args){
-        if(args[i] == null){
-            callback(false);
-            return undefined;
-        }
-    }
-    return callback;
-}
-
-let isAccountExist = (account, callback) => {
-    callback = _checkParams(callback, account);
-    if (callback == undefined) return;
-
-    let sql = 'SELECT * FROM t_accounts WHERE account = "' + account + '"';
-    query(sql, (err, rows, fields) => {
-        if (err) {
-            callback(false);
-            throw err;
-        }
-        else {
-            if (rows.length > 0) {
-                callback(true);
-            }
-            else {
-                callback(false);
-            }
-        }
-    });
-};
-
-let createAccount = (account, password, callback) => {
-    callback = _checkParams(callback, account, password);
-    if (callback == undefined) return;
-
-    let psw = crypto.md5(password);
-    let sql = 'INSERT INTO t_accounts(account,password) VALUES("' + account + '","' + psw + '")';
-    query(sql, (err, rows, fields) => {
-        if (err) {
-            // 重复键名称'%s'
-            if (err.code == 'ER_DUP_ENTRY') {
-                callback(false);
-                return;
-            }
-            callback(false);
-            throw err;
-        }
-        else {
-            callback(true);
-        }
-    });
-};
-
-let getAccountInfo = (account, password, callback) => {
-    callback = _checkParams(callback, account, password);
-    if (callback == undefined) return;
-
-
-    let sql = 'SELECT * FROM t_accounts WHERE account = "' + account + '"';
-    query(sql, (err, rows, fields) => {
-        if (err) {
-            callback(null);
-            throw err;
-        }
-
-        if (rows.length == 0) {
-            callback(null);
-            return;
-        }
-
-        if (password != null) {
-            let psw = crypto.md5(password);
-            if (rows[0].password == psw) {
-                callback(null);
-                return;
-            }
-        }
-
-        callback(rows[0]);
-    });
-};
-
-/**
  * 通用的查询单个或者列表的数据方法
  * @param {*} sql 参数对象
  * @param {*} callback 回调函数
@@ -175,6 +89,7 @@ let insert = (paramObject, tableName) => {
         if (err) {
             // 重复键名称'%s'
             if (err.code == 'ER_DUP_ENTRY') {
+              console.log(err)
               resolve(false);
             }
             resolve(false);
@@ -190,14 +105,9 @@ let insert = (paramObject, tableName) => {
  * 通用的修改数据方法
  * @param {*} paramObject 参数对象
  * @param {*} tableName 表名
- * @param {*} callback 回调函数
  */
 let update = (paramObject, tableName, where, callback) => {
-    for(let k in paramObject) {
-        callback = _checkParams(callback, paramObject[k]);
-        if (callback === undefined) return;
-    }
-
+  return new Promise((resolve, reject) => {
     let params = '';
     let whereStr = '';
     for(let i in paramObject){
@@ -212,12 +122,13 @@ let update = (paramObject, tableName, where, callback) => {
     console.log('sql:' + sql)
     query(sql, (err, rows, fields) => {
         if (err) {
-            callback(false);
-            throw err;
+            console.log(err)
+            resolve(false);
         } else {
-            callback(true);
+            resolve(true);
         }
     });
+  })
 }
 
 module.exports = {
