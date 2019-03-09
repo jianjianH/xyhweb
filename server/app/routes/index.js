@@ -39,4 +39,7 @@ router.get('/v1/testAdd', xyh.testAdd)
 router.get('/v1/testQuery', xyh.testQuery)
 router.get('/v1/testUpdate', xyh.testUpdate)
 
+//管理后台相关
+const manage = require('../controllers/manage')
+router.post('/v1/backstage/banner/add',manage.addBanner)
 module.exports = router

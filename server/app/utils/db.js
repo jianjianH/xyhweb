@@ -134,9 +134,6 @@ let update = (paramObject, tableName, where, callback) => {
 module.exports = {
     query,
     init,
-    isAccountExist,
-    createAccount,
-    getAccountInfo,
     select,
     insert,
     update,
