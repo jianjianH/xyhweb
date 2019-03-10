@@ -183,7 +183,6 @@ let login = async (ctx, next) => {
                 "result": 1,
                 "data": returnBody
             }
-            console.log(ctx.state)
         }
     }
 }
@@ -199,7 +198,6 @@ let wxLogin = async (code) => {
     let wxSecret = app_config.AppSecret;
     let url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + wxAppId + "&secret=" + wxSecret +
         "&js_code=" + code + "&grant_type=authorization_code";
-    console.log('wxLogin')
     let getResult = await http.get(url, null);
     console.log('getResult:'+JSON.stringify(getResult))
     if (getResult.success) {
@@ -224,47 +222,7 @@ let wxLogin = async (code) => {
     }
 }
 
-// 测试 使用banner表测试
-let testAdd = async (ctx, next) => {
-  let paramObject = {
-    "banner_type": 1,
-    "url":"www.jnehuang.cn",
-    "image_url":"https://jnehuang.cn",
-    "weight":100,
-    "begin_time":"2019-3-2",
-    "end_time":"2019-3-3"
-  }
-  console.log("test insert")
-  db.insert(paramObject, "banner", (result) => {
-    console.log(result);
-    ctx.state = {
-      result: 1,
-      data: {'nice': result}
-    }
-  });
-}
-let testQuery = async (ctx, next) => {
-  db.select("select * from banner", (result) => {
-    console.log(result);
-  });
-}
-let testUpdate = async (ctx, next) => {
-  let paramObject = {
-    "banner_type": 2,
-    "weight": 99
-  }
-  let where = {
-    "end_time":"2019-3-3"
-  }
-  db.update(paramObject, "banner", where, (result) => {
-    console.log(result);
-  });
-}
-
 module.exports = {
-    testAdd,
-    testQuery,
-    testUpdate,
     getDonateList,
     getDonateNcList,
     getNewsList,
