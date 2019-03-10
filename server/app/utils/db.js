@@ -85,17 +85,17 @@ let insert = (paramObject, tableName) => {
       let sql = "INSERT INTO " + tableName + '(' + fields + ') VALUES(' + values + ')';
       console.log('sql:' + sql)
 
-      query(sql, (err, rows, fields) => {
+      query(sql, (err, rows) => {
         if (err) {
             // 重复键名称'%s'
             if (err.code == 'ER_DUP_ENTRY') {
               console.log(err)
-              resolve(false);
+              resolve(0);
             }
-            resolve(false);
+            resolve(0);
         }
         else {
-          resolve(true);
+          resolve(rows.insertId);
         }
     });
   })
