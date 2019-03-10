@@ -43,4 +43,5 @@ router.get('/v1/testUpdate', xyh.testUpdate)
 const manage = require('../controllers/manage')
 router.post('/v1/backstage/banner/add',manage.addBanner)
 router.post('/v1/backstage/banner/update',manage.updateBanner)
+router.get('/v1/backstage/banner/list',manage.getBannerList)
 module.exports = router

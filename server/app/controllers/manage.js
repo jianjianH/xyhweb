@@ -14,24 +14,27 @@ let addBanner = async (ctx, next) => {
     data['create_time'] = now;
     data['update_time'] = now;
     console.log(data);
-    // 返回参数(暂时不清楚mysql返回自增主键的值是怎么样的)
     let returnBody = {
         "result": -1,
         "data": {
             'banner_id': 0
         }
     }
-    db.insert(data, 'banner', (result) => {
-        console.log(result);
-        if (result) {
-            returnBody.result = 1;
-            //返回bannerId(返回mysql的自增主键)
-            returnBody.data.banner_id = 123;
-        } else {
-            returnBody.result = 0;
-        }
-        ctx.state = returnBody;
-    });
+    let insertResult = await db.insert(data, 'banner');
+    console.log('insert banner --->' + insertResult);
+    //获取增加主键id：此时获取到的是一个json数组[ { 'LAST_INSERT_ID()': 30 } ] 
+    let LAST_INSERT_ID = await db.select('SELECT LAST_INSERT_ID();');
+    console.log('自增主键-->' + LAST_INSERT_ID);
+    let singleObj = LAST_INSERT_ID[0];
+    //由于不能直接 singleObj.LAST_INSERT_ID()取出(会报错)   只能通过循环遍历
+    let banner_id = 0;
+    for (let i in singleObj) {
+        banner_id = singleObj[i];
+    }
+    //组装返回参数
+    returnBody.result = insertResult ? 1 : 0;
+    returnBody.data.banner_id = banner_id;
+    ctx.state = returnBody;
 }
 
 
@@ -49,25 +52,41 @@ let updateBanner = async (ctx, next) => {
     //删除修改条件
     delete paramsObject.banner_id;
     console.log(paramsObject);
-    // 返回参数(暂时不清楚mysql返回自增主键的值是怎么样的)
     let returnBody = {
         "result": -1,
         "data": {
-            'banner_id': data.banner_id
+            'banner_id': where.id
         }
     }
-    db.update(paramsObject, 'banner', where, (result) => {
-        console.log(result);
-        if (result) {
-            returnBody.result = 1;
-        } else {
-            returnBody.result = 0;
-        }
+    let updateResult = await db.update(paramsObject, 'banner', where);
+    console.log('update banner -->' + updateResult);
+    returnBody.result = updateResult ? 1 : 0;
+    ctx.state = returnBody;
+}
 
-    });
+/**
+ * 获取所有banner
+ */
+let getBannerList = async (ctx, next) => {
+    let sql = "SELECT id AS banner_id,banner_type,url,image_url,weight,begin_time AS start_time,end_time FROM `banner` ;"
+    let bannerList = await db.select(sql);
+    let returnBody = {
+        "result": -1,
+        "data": {
+
+        }
+    }
+    if (bannerList == undefined) {
+        returnBody.result = 0;
+    } else {
+        returnBody.result = 1;
+        returnBody.data = bannerList;
+    }
+    ctx.state = returnBody;
 }
 
 module.exports = {
     addBanner,
-    updateBanner
+    updateBanner,
+    getBannerList
 }
